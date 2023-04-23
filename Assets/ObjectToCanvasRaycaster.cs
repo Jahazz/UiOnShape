@@ -19,6 +19,14 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
     [field: SerializeField]
     private bool IsDebug { get; set; }
 
+    [field: Space]
+    [field: SerializeField]
+    private RenderTexture TargetRenderTexture { get; set; }
+    [field: SerializeField]
+    private Collider TargetObjectCollider { get; set; }
+    [field: SerializeField]
+    private int TargetRenderTextureWidth { get; set; }
+
     private Mouse VirtualMouse { get; set; }
     private const string VIRTUAL_MOUSE_NAME = "VirtualMouse";
 
@@ -59,5 +67,15 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
         }
 
         InputUser.PerformPairingWithDevice(VirtualMouse, PlayerInputInstance.user);
+    }
+
+    public void FitToObject ()
+    {
+        Vector3 TargetColliderSize = TargetObjectCollider.bounds.size;
+        float ratio = TargetColliderSize.z/TargetColliderSize.x;
+        TargetRenderTexture.Release();
+        TargetRenderTexture.width = TargetRenderTextureWidth;
+        TargetRenderTexture.height = (int)(TargetRenderTexture.width * ratio);
+        TargetRenderTexture.Create();
     }
 }
