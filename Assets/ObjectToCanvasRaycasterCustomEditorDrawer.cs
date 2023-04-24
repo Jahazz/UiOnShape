@@ -9,11 +9,19 @@ public class ObjectToCanvasRaycasterCustomEditorDrawer : Editor
     {
         DrawDefaultInspector();
 
-        ObjectToCanvasRaycaster myScript = (ObjectToCanvasRaycaster)target;
+        ObjectToCanvasRaycaster ObjectToCanvasRaycasterInstance = (ObjectToCanvasRaycaster)target;
 
-        if (GUILayout.Button("Open File"))
+        if (GUILayout.Button("FitCanvasToPage"))
         {
-            myScript.FitToObject();
+            ObjectToCanvasRaycasterInstance.FitToObject();
+        }
+        if (GUILayout.Button("TurnPageLeftToRight"))
+        {
+            ObjectToCanvasRaycasterInstance.FlipPageLeftToRight();
+        }
+        if (GUILayout.Button("TurnPageRightToLeft"))
+        {
+            ObjectToCanvasRaycasterInstance.FlipPageRightToLeft();
         }
     }
 }

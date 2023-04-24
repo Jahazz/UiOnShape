@@ -418,18 +418,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f66c698f2a809408eb8fcefaf3c758, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Bones>k__BackingField:
-  - {fileID: 955332625595877094}
-  - {fileID: 5588231357886453408}
-  - {fileID: 2463333474937210200}
-  - {fileID: 2959420499694031759}
-  - {fileID: 8792777438417125581}
-  - {fileID: 1605418469062000285}
-  - {fileID: 193350189002344715}
-  - {fileID: 3603957654006075912}
-  - {fileID: 8510390074903446274}
-  - {fileID: 3460242176665568081}
-  - {fileID: 5182057946205540002}
+  <AnimatorComponent>k__BackingField: {fileID: 6204864193452134759}
+  <TargetObjectCollider>k__BackingField: {fileID: 6204864191960083822}
+  <TargetObjectRenderer>k__BackingField: {fileID: 5208483218424888392}
+  <SideOfPage>k__BackingField: 1
 --- !u!1 &6968255982918961112
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +499,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -5913454131380818186, guid: 67b19529925c9c642ad9b1fe06864b6b, type: 3}
   m_Bones:
