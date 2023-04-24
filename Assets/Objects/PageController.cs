@@ -18,10 +18,10 @@ public class PageController : MonoBehaviour
     private float TOP_PAGE_Y_POSITION = 0.00001f;
     private float DEFAULT_PAGE_Y_POSITION = 0;
 
-    public void Update ()
+    public void UpdateNormals ()
     {
         Mesh mesh = new Mesh();
-        TargetObjectRenderer.BakeMesh(mesh,true);
+        TargetObjectRenderer.BakeMesh(mesh, true);
         mesh.RecalculateBounds();
         TargetObjectCollider.sharedMesh = null;
         TargetObjectCollider.sharedMesh = mesh;
@@ -36,6 +36,7 @@ public class PageController : MonoBehaviour
         animatorTriggerName = GetAnimationNameByTargetSide(targetSide);
         AnimationComponent.Play(animatorTriggerName);
         SideOfPage = targetSide;
+        StartCoroutine(UpdateNormalsAfterAnimationIsFinished());
     }
 
     public void SetPageToSide (PageSide targetSide)
@@ -44,22 +45,20 @@ public class PageController : MonoBehaviour
         AnimationState animationState = AnimationComponent[targetAnimationName];
         animationState.normalizedTime = 1;
         AnimationComponent.Play(targetAnimationName);
+        StartCoroutine(UpdateNormalsAfterAnimationIsFinished());
     }
 
-    public void SetTopPageMark(bool isTop)
+    public void SetTopPageMark (int pageIndex)
     {
-        float yPosition;
-
-        if (isTop == true)
-        {
-            yPosition = TOP_PAGE_Y_POSITION;
-        }
-        else
-        {
-            yPosition = DEFAULT_PAGE_Y_POSITION;
-        }
+        float yPosition = pageIndex * TOP_PAGE_Y_POSITION;
 
         transform.position = new Vector3(transform.position.x, yPosition, transform.position.z);
+    }
+
+    private IEnumerator UpdateNormalsAfterAnimationIsFinished ()
+    {
+        yield return new WaitWhile(() => AnimationComponent.isPlaying);
+        UpdateNormals();
     }
 
     private string GetAnimationNameByTargetSide (PageSide targetSide)

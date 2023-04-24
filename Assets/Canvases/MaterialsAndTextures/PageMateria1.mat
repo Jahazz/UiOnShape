@@ -156,7 +156,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DoBottom: 1
     - _DoLeft: 1
-    - _DoRight: 1
+    - _DoRight: 0
     - _DoTop: 1
     - _DstBlend: 0
     - _EnableHeightBlend: 0

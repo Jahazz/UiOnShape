@@ -60,6 +60,7 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100))
         {
+            Debug.Log(hit.transform.name);
             CanvasController currentCanvasController = null;
 
             if (hit.collider == LeftPage?.PageControllerInstance.TargetObjectCollider)
@@ -85,7 +86,6 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
         if (IsDebug == true)
         {
-            Debug.Log(hit.transform.name);
             Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.red);
         }
         DisableAllExcept(currentCanvasController);
@@ -94,21 +94,22 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
     public void DisableAllExcept (CanvasController currentCanvasController)
     {
-        foreach (var item in PageCanvasInspectorCollection)
+        foreach (PageCanvasRelation item in PageCanvasInspectorCollection)
         {
             if (item.CanvasControllerBottomInstance != currentCanvasController)
             {
                 item.CanvasControllerBottomInstance?.SetStateOfRaycaster(false);
             }
+            else
+            {
+                item.CanvasControllerBottomInstance?.SetStateOfRaycaster(true);
+            }
+
             if (item.CanvasControllerTopInstance != currentCanvasController)
             {
                 item.CanvasControllerTopInstance?.SetStateOfRaycaster(false);
             }
-            if (item.CanvasControllerBottomInstance == currentCanvasController)
-            {
-                item.CanvasControllerBottomInstance?.SetStateOfRaycaster(true);
-            }
-            if (item.CanvasControllerTopInstance == currentCanvasController)
+            else
             {
                 item.CanvasControllerTopInstance?.SetStateOfRaycaster(true);
             }
@@ -194,13 +195,23 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
             }
         }
 
-        LeftPage?.PageControllerInstance.SetTopPageMark(false); //TODO: find better way to fix clipping
-        RightPage?.PageControllerInstance.SetTopPageMark(false);
-
         LeftPage = leftPage;
         RightPage = rightPage;
 
-        LeftPage?.PageControllerInstance.SetTopPageMark(true);
-        RightPage?.PageControllerInstance.SetTopPageMark(true);
+        int leftIndex = PageCanvasInspectorCollection.IndexOf(leftPage);
+        int rightIndex = PageCanvasInspectorCollection.IndexOf(rightPage);
+
+        for (int i = leftIndex; i >= 0; i--)//todo: just one loop with if
+        {
+            PageCanvasInspectorCollection[i].PageControllerInstance.SetTopPageMark(i-1);
+        }
+
+        for (int i = rightIndex; i < PageCanvasInspectorCollection.Count; i++)
+        {
+            PageCanvasInspectorCollection[i].PageControllerInstance.SetTopPageMark(rightIndex-i-1);
+        }
+
+        LeftPage?.PageControllerInstance.SetTopPageMark(leftIndex);
+        RightPage?.PageControllerInstance.SetTopPageMark(rightIndex);
     }
 }

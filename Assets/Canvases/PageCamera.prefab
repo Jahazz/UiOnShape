@@ -7315,7 +7315,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0
-  far clip plane: 1000
+  far clip plane: 2
   field of view: 176.03203
   orthographic: 1
   orthographic size: 10
@@ -8389,7 +8389,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!1 &1473061230409894656
 GameObject:
   m_ObjectHideFlags: 0
