@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PageMaterial1
+  m_Name: PageMateria1
   m_Shader: {fileID: -6465566751694194690, guid: f8c227108ff983146a99aa42dae0274d,
     type: 3}
   m_ValidKeywords: []
@@ -15,14 +15,14 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2950
   stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 8400000, guid: 8d639e89371a41c4e925a230e48b645a, type: 2}
+        m_Texture: {fileID: 8400000, guid: d5de844d60cef4846b81884954f775bb, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -50,7 +50,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 8400000, guid: 8d639e89371a41c4e925a230e48b645a, type: 2}
+        m_Texture: {fileID: 8400000, guid: d5de844d60cef4846b81884954f775bb, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTexture:
@@ -148,6 +148,7 @@ Material:
     - _BumpScale: 1
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
+    - _ColorMask: 15
     - _Cull: 2
     - _Cutoff: 0.5
     - _DefaultValue: 1
@@ -155,7 +156,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DoBottom: 1
     - _DoLeft: 1
-    - _DoRight: 0
+    - _DoRight: 1
     - _DoTop: 1
     - _DstBlend: 0
     - _EnableHeightBlend: 0
@@ -174,7 +175,7 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueOffset: -50
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
     - _Smoothness0: 0.5
@@ -184,14 +185,20 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     - _Surface: 0
+    - _UseUIAlphaClip: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Seed: {r: 5, g: 2, b: 0, a: 0}
+    - _Seed: {r: 2, g: 3, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7868909966977201304
