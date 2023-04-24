@@ -5,7 +5,7 @@ using UnityEngine;
 public class PageController : MonoBehaviour
 {
     [field: SerializeField]
-    private Animator AnimatorComponent { get; set; }
+    private Animation AnimationComponent { get; set; }
     [field: SerializeField]
     public MeshCollider TargetObjectCollider { get; private set; }
     [field: SerializeField]
@@ -13,8 +13,8 @@ public class PageController : MonoBehaviour
     [field: SerializeField]
     public PageSide SideOfPage { get; private set; }
 
-    private const string LEFT_TO_RIGHT_ANIMATOR_TRIGGER_NAME = "LeftToRight";
-    private const string RIGHT_TO_LEFT_ANIMATOR_TRIGGER_NAME = "RightToLeft";
+    private const string LEFT_TO_RIGHT_ANIMATION_NAME = "LeftToRightPageFlip";
+    private const string RIGHT_TO_LEFT_ANIMATION_NAME = "RightToLeftPageFlip";
     private float TOP_PAGE_Y_POSITION = 0.00001f;
     private float DEFAULT_PAGE_Y_POSITION = 0;
 
@@ -30,21 +30,20 @@ public class PageController : MonoBehaviour
     public void FlipPage ()
     {
         string animatorTriggerName;
-        PageSide currentSide;
+        PageSide targetSide;
 
-        if (SideOfPage == PageSide.LEFT)
-        {
-            animatorTriggerName = LEFT_TO_RIGHT_ANIMATOR_TRIGGER_NAME;
-            currentSide = PageSide.RIGHT;
-        }
-        else
-        {
-            animatorTriggerName = RIGHT_TO_LEFT_ANIMATOR_TRIGGER_NAME;
-            currentSide = PageSide.LEFT;
-        }
+        targetSide = SideOfPage == PageSide.LEFT ? PageSide.RIGHT : PageSide.LEFT;
+        animatorTriggerName = GetAnimationNameByTargetSide(targetSide);
+        AnimationComponent.Play(animatorTriggerName);
+        SideOfPage = targetSide;
+    }
 
-        AnimatorComponent.SetTrigger(animatorTriggerName);
-        SideOfPage = currentSide;
+    public void SetPageToSide (PageSide targetSide)
+    {
+        string targetAnimationName = GetAnimationNameByTargetSide(targetSide);
+        AnimationState animationState = AnimationComponent[targetAnimationName];
+        animationState.normalizedTime = 1;
+        AnimationComponent.Play(targetAnimationName);
     }
 
     public void SetTopPageMark(bool isTop)
@@ -61,5 +60,10 @@ public class PageController : MonoBehaviour
         }
 
         transform.position = new Vector3(transform.position.x, yPosition, transform.position.z);
+    }
+
+    private string GetAnimationNameByTargetSide (PageSide targetSide)
+    {
+        return targetSide == PageSide.LEFT ? RIGHT_TO_LEFT_ANIMATION_NAME : LEFT_TO_RIGHT_ANIMATION_NAME;
     }
 }

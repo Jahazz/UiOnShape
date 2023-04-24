@@ -29,7 +29,7 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
     public void FlipPageLeftToRight ()
     {
-        if (LeftPage != null)
+        if (LeftPage != null && LeftPage?.CanvasControllerTopInstance != null)
         {
             LeftPage.PageControllerInstance.FlipPage();
         }
@@ -40,7 +40,7 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
     public void FlipPageRightToLeft ()
     {
 
-        if (RightPage != null)
+        if (RightPage != null && RightPage?.CanvasControllerBottomInstance != null)
         {
             RightPage.PageControllerInstance.FlipPage();
         }
@@ -96,14 +96,14 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
     {
         foreach (var item in PageCanvasInspectorCollection)
         {
-                if (item.CanvasControllerBottomInstance != currentCanvasController)
-                {
-                    item.CanvasControllerBottomInstance?.SetStateOfRaycaster(false);
-                }
-                if (item.CanvasControllerTopInstance != currentCanvasController)
-                {
-                    item.CanvasControllerTopInstance?.SetStateOfRaycaster(false);
-                }
+            if (item.CanvasControllerBottomInstance != currentCanvasController)
+            {
+                item.CanvasControllerBottomInstance?.SetStateOfRaycaster(false);
+            }
+            if (item.CanvasControllerTopInstance != currentCanvasController)
+            {
+                item.CanvasControllerTopInstance?.SetStateOfRaycaster(false);
+            }
             if (item.CanvasControllerBottomInstance == currentCanvasController)
             {
                 item.CanvasControllerBottomInstance?.SetStateOfRaycaster(true);
@@ -119,7 +119,16 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
     public virtual void Awake ()
     {
         SetupVirtualMouse();
+        SetPagesToDefaultStates();
         RecalculatePages();
+    }
+
+    private void SetPagesToDefaultStates ()
+    {
+        foreach (var page in PageCanvasInspectorCollection)
+        {
+            page.PageControllerInstance.SetPageToSide(page.PageControllerInstance.SideOfPage);
+        }
     }
 
     private void SetupVirtualMouse ()
