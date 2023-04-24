@@ -25,7 +25,9 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
     private PageCanvasRelation RightPage { get; set; }
 
     private Mouse VirtualMouse { get; set; }
+    private Mouse PhysicalMouse { get; set; }
     private const string VIRTUAL_MOUSE_NAME = "VirtualMouse";
+    private const string PHYSICAL_MOUSE_NAME = "Mouse";
 
     public void FlipPageLeftToRight ()
     {
@@ -60,7 +62,6 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, 100))
         {
-            Debug.Log(hit.transform.name);
             CanvasController currentCanvasController = null;
 
             if (hit.collider == LeftPage?.PageControllerInstance.TargetObjectCollider)
@@ -74,10 +75,36 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
             if (currentCanvasController != null)
             {
+                SwapToMouse(true);
                 CheckHitForPage(ray, hit, currentCanvasController);
             }
+            else
+            {
+                SwapToMouse(false);
+                DisableAllExcept(null);
+            }
+        }
+        else
+        {
+            SwapToMouse(false);
+            DisableAllExcept(null);
         }
     }
+
+    private void SwapToMouse(bool swapToVirtual)
+    {
+        if(swapToVirtual == true)
+        {
+            InputSystem.DisableDevice(PhysicalMouse);
+            InputSystem.EnableDevice(VirtualMouse);
+        }
+        else
+        {
+            InputSystem.DisableDevice(VirtualMouse);
+            InputSystem.EnableDevice(PhysicalMouse);
+        }
+    }
+
 
     private void CheckHitForPage (Ray ray, RaycastHit hit, CanvasController currentCanvasController)
     {
@@ -119,7 +146,7 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
 
     public virtual void Awake ()
     {
-        SetupVirtualMouse();
+        SetupInputs();
         SetPagesToDefaultStates();
         RecalculatePages();
     }
@@ -132,9 +159,10 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
         }
     }
 
-    private void SetupVirtualMouse ()
+    private void SetupInputs ()
     {
         VirtualMouse = (Mouse)InputSystem.GetDevice(VIRTUAL_MOUSE_NAME);
+        PhysicalMouse = (Mouse)InputSystem.GetDevice(PHYSICAL_MOUSE_NAME);
 
         if (VirtualMouse == null)
         {
