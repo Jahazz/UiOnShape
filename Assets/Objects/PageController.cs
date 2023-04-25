@@ -16,7 +16,6 @@ public class PageController : MonoBehaviour
     private const string LEFT_TO_RIGHT_ANIMATION_NAME = "LeftToRightPageFlip";
     private const string RIGHT_TO_LEFT_ANIMATION_NAME = "RightToLeftPageFlip";
     private float TOP_PAGE_Y_POSITION = 0.00001f;
-    private float DEFAULT_PAGE_Y_POSITION = 0;
 
     public void UpdateNormals ()
     {
@@ -27,13 +26,14 @@ public class PageController : MonoBehaviour
         TargetObjectCollider.sharedMesh = mesh;
     }
 
-    public void FlipPage ()
+    public void FlipPage (float animationPlaybackSpeed)
     {
         string animatorTriggerName;
         PageSide targetSide;
 
         targetSide = SideOfPage == PageSide.LEFT ? PageSide.RIGHT : PageSide.LEFT;
         animatorTriggerName = GetAnimationNameByTargetSide(targetSide);
+        AnimationComponent[animatorTriggerName].speed = animationPlaybackSpeed;
         AnimationComponent.Play(animatorTriggerName);
         SideOfPage = targetSide;
         StartCoroutine(UpdateNormalsAfterAnimationIsFinished());
@@ -53,6 +53,11 @@ public class PageController : MonoBehaviour
         float yPosition = pageIndex * TOP_PAGE_Y_POSITION;
 
         transform.position = new Vector3(transform.position.x, yPosition, transform.position.z);
+    }
+
+    public bool IsAnimating ()
+    {
+        return AnimationComponent.isPlaying;
     }
 
     private IEnumerator UpdateNormalsAfterAnimationIsFinished ()

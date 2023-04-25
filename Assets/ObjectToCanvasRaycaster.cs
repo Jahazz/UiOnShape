@@ -29,30 +29,59 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
     private const string VIRTUAL_MOUSE_NAME = "VirtualMouse";
     private const string PHYSICAL_MOUSE_NAME = "Mouse";
 
-    public void FlipPageLeftToRight ()
+    public void FlipPageLeftToRight (float playbackSpeed = 1.0f)
     {
         if (LeftPage != null && LeftPage?.CanvasControllerTopInstance != null)
         {
-            LeftPage.PageControllerInstance.FlipPage();
+            LeftPage.PageControllerInstance.FlipPage(playbackSpeed);
         }
 
         RecalculatePages();
     }
 
-    public void FlipPageRightToLeft ()
+    public void FlipPageRightToLeft (float playbackSpeed = 1.0f)
     {
 
         if (RightPage != null && RightPage?.CanvasControllerBottomInstance != null)
         {
-            RightPage.PageControllerInstance.FlipPage();
+            RightPage.PageControllerInstance.FlipPage(playbackSpeed);
         }
 
         RecalculatePages();
+    }
+
+    public void OpenPage (int targetPageIndex)
+    {
+        StartCoroutine(OpenPageCoroutine(targetPageIndex));
     }
 
     protected virtual void Update ()
     {
         RaycastPages();
+    }
+
+    private IEnumerator OpenPageCoroutine (int targetPageIndex)
+    {
+        PageCanvasRelation pageToGet = PageCanvasInspectorCollection[targetPageIndex];
+
+        if (pageToGet != LeftPage)
+        {
+            int leftPageIndex = PageCanvasInspectorCollection.IndexOf(LeftPage);
+
+            for (int i = 0; i < Mathf.Abs(leftPageIndex - targetPageIndex); i++)
+            {
+                if (leftPageIndex > targetPageIndex)
+                {
+                    yield return new WaitWhile(RightPage.PageControllerInstance.IsAnimating);
+                    FlipPageLeftToRight(2);
+                }
+                else
+                {
+                    yield return new WaitWhile(LeftPage.PageControllerInstance.IsAnimating);
+                    FlipPageRightToLeft(2);
+                }
+            }
+        }
     }
 
     private void RaycastPages ()
@@ -96,8 +125,8 @@ public class ObjectToCanvasRaycaster : MonoBehaviour
         if(swapToVirtual == true)
         {
             InputSystem.DisableDevice(PhysicalMouse);
-            InputSystem.EnableDevice(VirtualMouse);
-        }
+            InputSystem.EnableDevice(VirtualMouse);//TODO: remove shitshow, 
+        }                                          //hint:auto-generate your own .inputactions asset or use individual InputAction variables
         else
         {
             InputSystem.DisableDevice(VirtualMouse);
